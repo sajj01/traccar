@@ -293,6 +293,30 @@ public class CastelProtocolDecoder extends BaseProtocolDecoder {
             case 0x17:
                 position.set(Position.KEY_IGNITION, false);
                 break;
+            case 0x0A:
+                position.set(Position.Exhaust_Emission, Position.Exhaust_Emission);
+                break;
+            case 0x0D:
+                position.set(Position.KEY_ALARM, Position.Alarm_Fatigue_Driving);
+                break;
+            case 0x18:
+                position.set(Position.KEY_ALARM, Position.Alarm_Mil);
+                break;
+            case 0x11:
+                position.set(Position.KEY_ALARM, Position.Alarm_Crash);
+                break;
+            case 0x1B:
+                position.set(Position.KEY_ALARM, Position.Alarm_Dangerous_Driving);
+                break;
+            case 0x1D:
+                position.set(Position.KEY_DOOR, true);
+                break;
+            case 0x1E:
+                position.set(Position.KEY_DOOR, false);
+                break;
+            //case 400B:
+            //    position.set(Position.KEY_ALARM, Position.ALARM_FAULT);
+            //   break;
             default:
                 break;
         }

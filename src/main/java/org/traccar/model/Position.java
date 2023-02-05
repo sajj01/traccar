@@ -62,6 +62,8 @@ public class Position extends Message {
     public static final String KEY_VERSION_HW = "versionHw";
     public static final String KEY_TYPE = "type";
     public static final String KEY_IGNITION = "ignition";
+    public static final String Exhaust_Emission = "exhaustEmission";
+
     public static final String KEY_FLAGS = "flags";
     public static final String KEY_ANTENNA = "antenna";
     public static final String KEY_CHARGE = "charge";
@@ -115,9 +117,13 @@ public class Position extends Message {
     public static final String ALARM_FALL_DOWN = "fallDown";
     public static final String ALARM_LOW_POWER = "lowPower";
     public static final String ALARM_LOW_BATTERY = "lowBattery";
+    public static final String Alarm_Fatigue_Driving = "fatigueDriving";
     public static final String ALARM_FAULT = "fault";
     public static final String ALARM_POWER_OFF = "powerOff";
     public static final String ALARM_POWER_ON = "powerOn";
+    public static final String Alarm_Mil = "milAlarm";
+    public static final String Alarm_Crash = "crashAlarm";
+    public static final String Alarm_Dangerous_Driving = "dangerousAlarm";
     public static final String ALARM_DOOR = "door";
     public static final String ALARM_LOCK = "lock";
     public static final String ALARM_UNLOCK = "unlock";
