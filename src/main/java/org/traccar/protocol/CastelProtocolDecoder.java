@@ -314,9 +314,9 @@ public class CastelProtocolDecoder extends BaseProtocolDecoder {
             case 0x1E:
                 position.set(Position.KEY_DOOR, false);
                 break;
-            //case 400B:
-            //    position.set(Position.KEY_ALARM, Position.ALARM_FAULT);
-            //   break;
+            case 4006:
+                position.set(Position.KEY_ALARM, Position.ALARM_FAULT);
+               break;
             default:
                 break;
         }
@@ -518,7 +518,7 @@ public class CastelProtocolDecoder extends BaseProtocolDecoder {
                 Position position = readPosition(deviceSession, buf);
 
                 position.set(Position.KEY_STATUS, buf.readUnsignedIntLE());
-                position.set(Position.KEY_BATTERY, buf.readUnsignedByte());
+                position.set(Position.KEY_BATTERY_LEVEL, buf.readUnsignedByte());
                 position.set(Position.KEY_ODOMETER, buf.readUnsignedIntLE());
 
                 buf.readUnsignedByte(); // geo-fencing id
@@ -540,7 +540,7 @@ public class CastelProtocolDecoder extends BaseProtocolDecoder {
             Position position = readPosition(deviceSession, buf);
 
             position.set(Position.KEY_STATUS, buf.readUnsignedIntLE());
-            position.set(Position.KEY_BATTERY, buf.readUnsignedByte());
+            position.set(Position.KEY_BATTERY_LEVEL, buf.readUnsignedByte());
             position.set(Position.KEY_ODOMETER, buf.readUnsignedIntLE());
 
             buf.readUnsignedByte(); // geo-fencing id
