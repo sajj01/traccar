@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 - 2022 Anton Tananaev (anton@traccar.org)
+ * Copyright 2012 - 2023 Anton Tananaev (anton@traccar.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -420,6 +420,12 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
                     case 0x15:
                         position.set(Position.KEY_INPUT, buf.readUnsignedByte());
                         break;
+                    case 0x47:
+                        int lockState = buf.readUnsignedByte();
+                        if (lockState > 0) {
+                            position.set(Position.KEY_LOCK, lockState == 2);
+                        }
+                        break;
                     case 0x97:
                         position.set(Position.KEY_THROTTLE, buf.readUnsignedByte());
                         break;
@@ -510,6 +516,9 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
                     case 0x0D:
                         position.set("runtime", buf.readUnsignedIntLE());
                         break;
+                    case 0x25:
+                        position.set(Position.KEY_DRIVER_UNIQUE_ID, String.valueOf(buf.readUnsignedIntLE()));
+                        break;
                     case 0xA0:
                         position.set(Position.KEY_FUEL_USED, buf.readUnsignedIntLE() * 0.001);
                         break;
@@ -543,6 +552,17 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
                         buf.readUnsignedByte(); // alarm protocol
                         buf.readUnsignedByte(); // alarm type
                         buf.skipBytes(length - 2);
+                        break;
+                    case 0xFEA8:
+                        for (int k = 1; k <= 3; k++) {
+                            if (buf.readUnsignedByte() > 0) {
+                                String key = k == 1 ? Position.KEY_BATTERY_LEVEL : "battery" + k + "Level";
+                                position.set(key, buf.readUnsignedByte());
+                            } else {
+                                buf.readUnsignedByte();
+                            }
+                        }
+                        buf.readUnsignedByte(); // battery alert
                         break;
                     default:
                         buf.skipBytes(length);
@@ -624,6 +644,13 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
                 photo = Unpooled.buffer();
                 requestPhotoPacket(channel, remoteAddress, imei, "camera_picture.jpg", 0);
                 return null;
+            case "D82":
+                Position position = new Position(getProtocolName());
+                position.setDeviceId(getDeviceSession(channel, remoteAddress, imei).getDeviceId());
+                getLastLocation(position, null);
+                String result = buf.toString(index + 1, buf.writerIndex() - index - 4, StandardCharsets.US_ASCII);
+                position.set(Position.KEY_RESULT, result);
+                return position;
             case "CCC":
                 return decodeBinaryC(channel, remoteAddress, buf);
             case "CCE":

@@ -293,6 +293,13 @@ public final class Keys {
             List.of(KeyType.CONFIG));
 
     /**
+     * Send device responses immediately before writing it in the database.
+     */
+    public static final ConfigKey<Boolean> SERVER_INSTANT_ACKNOWLEDGEMENT = new BooleanConfigKey(
+            "server.instantAcknowledgement",
+            List.of(KeyType.CONFIG));
+
+    /**
      * Address for uploading aggregated anonymous usage statistics. Uploaded information is the same you can see on the
      * statistics screen in the web app. It does not include any sensitive (e.g. locations).
      */
@@ -384,6 +391,13 @@ public final class Keys {
             "geofence.polylineDistance",
             List.of(KeyType.CONFIG),
             25.0);
+
+    /**
+     * Enable in-memory database instead of an SQL database.
+     */
+    public static final ConfigKey<Boolean> DATABASE_MEMORY = new BooleanConfigKey(
+            "database.memory",
+            List.of(KeyType.CONFIG));
 
     /**
      * Path to the database driver JAR file. Traccar includes drivers for MySQL, PostgreSQL and H2 databases. If you use
@@ -488,6 +502,13 @@ public final class Keys {
             List.of(KeyType.CONFIG));
 
     /**
+     * Automatically register unknown devices with regex filter.
+     */
+    public static final ConfigKey<String> DATABASE_REGISTER_UNKNOWN_REGEX = new StringConfigKey(
+            "database.registerUnknown.regex",
+            List.of(KeyType.CONFIG), "\\w{3,15}");
+
+    /**
      * Store empty messages as positions. For example, heartbeats.
      */
     public static final ConfigKey<Boolean> DATABASE_SAVE_EMPTY = new BooleanConfigKey(
@@ -587,6 +608,85 @@ public final class Keys {
      */
     public static final ConfigKey<String> LDAP_ADMIN_GROUP = new StringConfigKey(
             "ldap.adminGroup",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * Force OpenID Connect authentication. When enabled, the Traccar login page will be skipped
+     * and users are redirected to the OpenID Connect provider.
+     */
+    public static final ConfigKey<Boolean> OPENID_FORCE = new BooleanConfigKey(
+            "openid.force",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect Client ID.
+     * This is a unique ID assigned to each application you register with your identity provider.
+     * Required to enable SSO.
+     */
+    public static final ConfigKey<String> OPENID_CLIENT_ID = new StringConfigKey(
+            "openid.clientId",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect Client Secret.
+     * This is a secret assigned to each application you register with your identity provider.
+     * Required to enable SSO.
+     */
+    public static final ConfigKey<String> OPENID_CLIENT_SECRET = new StringConfigKey(
+            "openid.clientSecret",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect Issuer (Base) URL.
+     * This is used to automatically configure the authorization, token and user info URLs if provided.
+     */
+    public static final ConfigKey<String> OPENID_ISSUER_URL = new StringConfigKey(
+            "openid.issuerUrl",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect Authorization URL.
+     * This can usually be found in the documentation of your identity provider or by using the well-known
+     * configuration endpoint, eg. https://auth.example.com//.well-known/openid-configuration
+     * Required to enable SSO if openid.issuerUrl is not set.
+     */
+    public static final ConfigKey<String> OPENID_AUTH_URL = new StringConfigKey(
+            "openid.authUrl",
+            List.of(KeyType.CONFIG));
+    /**
+     * OpenID Connect Token URL.
+     * This can be found in the same ways at openid.authUrl.
+     * Required to enable SSO if openid.issuerUrl is not set.
+     */
+    public static final ConfigKey<String> OPENID_TOKEN_URL = new StringConfigKey(
+            "openid.tokenUrl",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect User Info URL.
+     * This can be found in the same ways at openid.authUrl.
+     * Required to enable SSO if openid.issuerUrl is not set.
+     */
+    public static final ConfigKey<String> OPENID_USERINFO_URL = new StringConfigKey(
+            "openid.userInfoUrl",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect group to restrict access to.
+     * If this is not provided, all OpenID users will have access to Traccar.
+     * This option will only work if your OpenID provider supports the groups scope.
+     */
+    public static final ConfigKey<String> OPENID_ALLOW_GROUP = new StringConfigKey(
+        "openid.allowGroup",
+        List.of(KeyType.CONFIG));
+
+    /**
+     * OpenID Connect group to grant admin access.
+     * If this is not provided, no groups will be granted admin access.
+     * This option will only work if your OpenID provider supports the groups scope.
+     */
+    public static final ConfigKey<String> OPENID_ADMIN_GROUP = new StringConfigKey(
+            "openid.adminGroup",
             List.of(KeyType.CONFIG));
 
     /**
@@ -706,6 +806,13 @@ public final class Keys {
             "max-age=3600,public");
 
     /**
+     * Host for raw data forwarding.
+     */
+    public static final ConfigKey<String> SERVER_FORWARD = new StringConfigKey(
+            "server.forward",
+            List.of(KeyType.CONFIG));
+
+    /**
      * Position forwarding format. Available options are "url", "json" and "kafka". Default is "url".
      */
     public static final ConfigKey<String> FORWARD_TYPE = new StringConfigKey(
@@ -819,6 +926,13 @@ public final class Keys {
      */
     public static final ConfigKey<Boolean> MAIL_DEBUG = new BooleanConfigKey(
             "mail.debug",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * Restrict global SMTP configuration to system messages only (e.g. password reset).
+     */
+    public static final ConfigKey<Boolean> MAIL_SMTP_SYSTEM_ONLY = new BooleanConfigKey(
+            "mail.smtp.systemOnly",
             List.of(KeyType.CONFIG));
 
     /**
@@ -1125,6 +1239,14 @@ public final class Keys {
             List.of(KeyType.CONFIG));
 
     /**
+     * Filter messages that do not have GPS location. If they are not filtered, they will include the last known
+     * location.
+     */
+    public static final ConfigKey<Boolean> FILTER_OUTDATED = new BooleanConfigKey(
+            "filter.outdated",
+            List.of(KeyType.CONFIG));
+
+    /**
      * Filter records with fix time in the future. The value is specified in seconds. Records that have fix time more
      * than the specified number of seconds later than current server time would be filtered out.
      */
@@ -1298,6 +1420,28 @@ public final class Keys {
      */
     public static final ConfigKey<Boolean> PROCESSING_COMPUTED_ATTRIBUTES_DEVICE_ATTRIBUTES = new BooleanConfigKey(
             "processing.computedAttributes.deviceAttributes",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * Enable local variables declaration.
+     */
+    public static final ConfigKey<Boolean> PROCESSING_COMPUTED_ATTRIBUTES_LOCAL_VARIABLES = new BooleanConfigKey(
+            "processing.computedAttributes.localVariables",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * Enable loops processing.
+     */
+    public static final ConfigKey<Boolean> PROCESSING_COMPUTED_ATTRIBUTES_LOOPS = new BooleanConfigKey(
+            "processing.computedAttributes.loops",
+            List.of(KeyType.CONFIG));
+
+    /**
+     * Enable new instances creation.
+     * When disabled, parsing a script/expression using 'new(...)' will throw a parsing exception;
+     */
+    public static final ConfigKey<Boolean> PROCESSING_COMPUTED_ATTRIBUTES_NEW_INSTANCE_CREATION = new BooleanConfigKey(
+            "processing.computedAttributes.newInstanceCreation",
             List.of(KeyType.CONFIG));
 
     /**
@@ -1523,7 +1667,7 @@ public final class Keys {
             List.of(KeyType.CONFIG));
 
     /**
-     * Public URL for the web app. Used for notification and report link.
+     * Public URL for the web app. Used for notification, report link and OpenID Connect.
      * If not provided, Traccar will attempt to get a URL from the server IP address, but it might be a local address.
      */
     public static final ConfigKey<String> WEB_URL = new StringConfigKey(

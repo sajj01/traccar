@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 - 2022 Anton Tananaev (anton@traccar.org)
+ * Copyright 2016 - 2023 Anton Tananaev (anton@traccar.org)
  * Copyright 2017 - 2018 Andrey Kunitsyn (andrey@traccar.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@ package org.traccar.notificators;
 
 import org.traccar.mail.MailManager;
 import org.traccar.model.Event;
+import org.traccar.model.Notification;
 import org.traccar.model.Position;
 import org.traccar.model.User;
 import org.traccar.notification.MessageException;
@@ -40,10 +41,10 @@ public class NotificatorMail implements Notificator {
     }
 
     @Override
-    public void send(User user, Event event, Position position) throws MessageException {
+    public void send(Notification notification, User user, Event event, Position position) throws MessageException {
         try {
             var fullMessage = notificationFormatter.formatMessage(user, event, position, "full");
-            mailManager.sendMessage(user, fullMessage.getSubject(), fullMessage.getBody());
+            mailManager.sendMessage(user, false, fullMessage.getSubject(), fullMessage.getBody());
         } catch (MessagingException e) {
             throw new MessageException(e);
         }

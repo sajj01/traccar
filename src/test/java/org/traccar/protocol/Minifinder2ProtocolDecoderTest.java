@@ -1,6 +1,6 @@
 package org.traccar.protocol;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.traccar.ProtocolTest;
 
 public class Minifinder2ProtocolDecoderTest extends ProtocolTest {
@@ -9,6 +9,10 @@ public class Minifinder2ProtocolDecoderTest extends ProtocolTest {
     public void testDecode() throws Exception {
 
         var decoder = inject(new Minifinder2ProtocolDecoder(null));
+
+        verifyAttribute(decoder, binary(
+                "ab101c00d6f61e000110013836333932313033393939363038300937efd201640c000000"),
+                "barkCount", 12L);
 
         verifyAttribute(decoder, binary(
                 "ab102600080f1400011001383633393231303339393833343736092429b347633003a96409020000008027b34763"),
